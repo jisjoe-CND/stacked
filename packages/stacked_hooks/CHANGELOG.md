@@ -1,7 +1,3 @@
-## 0.2.1+1
-
-- Upgraded the dependency on `provider` to 6.0.0
-
 ## 0.2.1
 
 - `flutter_hooks`: ^0.16.0 -> ^0.17.0
