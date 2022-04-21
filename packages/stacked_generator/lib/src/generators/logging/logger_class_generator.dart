@@ -11,8 +11,6 @@ class LoggerClassGenerator extends BaseGenerator {
       : _loggerConfig = loggerConfig;
 
   Future<String> generate() async {
-    // TODO: Refactor the way we do this to make more sense.
-    // TODO: Use O from SOLID principles (open / closed) to Close implementation
     final _logHelperNameKey = _loggerConfig.logHelperName;
     final _imports = _generateImports(_loggerConfig.imports);
     final _multiLogger = _generateMultiLoggers(_loggerConfig.loggerOutputs);
@@ -23,12 +21,7 @@ class LoggerClassGenerator extends BaseGenerator {
     final _replacedImports =
         _replacedHelperName.replaceFirst(MultiLoggerImports, _imports);
 
-    final _replacedConditionalLogger = _replacedImports.replaceFirst(
-        DisableConsoleOutputInRelease,
-        _loggerConfig.disableReleaseConsoleOutput ? 'if(!kReleaseMode)' : '');
-
-    write(_replacedConditionalLogger.replaceFirst(
-        MultipleLoggerOutput, _multiLogger));
+    write(_replacedImports.replaceFirst(MultipleLoggerOutput, _multiLogger));
 
     return stringBuffer.toString();
   }
@@ -37,7 +30,7 @@ class LoggerClassGenerator extends BaseGenerator {
     final _multiLoggers = StringBuffer();
 
     multiLogger.forEach((element) {
-      _multiLoggers.write(" if(kReleaseMode) $element(),");
+      _multiLoggers.write("$element(),");
     });
     return _multiLoggers.toString();
   }
